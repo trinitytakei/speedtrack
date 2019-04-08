@@ -1,0 +1,15 @@
+# Generated with SpeedTrack
+
+This is a Rails <%= Rails::VERSION::MAJOR %> app.
+
+## Project Requirements
+
+* Ruby <%= RUBY_VERSION %>
+* Chromedriver (OSX+Homebrew: brew install chromedriver)
+* PostgreSQL
+
+## Running your Tests
+
+on top of the usual way (plain `rspec`), you can control running capybara with headless or 'visible' Chrome by specifying the ENV variable 'SHOW_BROWSER' like so:
+
+SHOW_BROWSER=true rspec spec/features/user_visits_homepage_spec.rb
