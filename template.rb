@@ -129,7 +129,7 @@ def add_users
 end
 
 def add_null_object_for_user
-  user_extra_content = <<~CONTENT
+  user_extra_content = <<-CONTENT
     def is_a_guest?
       false
     end
@@ -200,7 +200,7 @@ def pimp_rails_helper_rb
   gsub_file "spec/rails_helper.rb", 'config.use_transactional_fixtures = true', 'config.use_transactional_fixtures = false'
   gsub_file "spec/rails_helper.rb", "# Dir[Rails.root.join('spec', 'support'", "Dir[Rails.root.join('spec', 'support'"
 
-  extra_includes = <<~CONTENT
+  extra_includes = <<-CONTENT
 
       config.include Devise::Test::IntegrationHelpers, type: :feature
       config.include Features, type: :feature
@@ -208,6 +208,24 @@ def pimp_rails_helper_rb
   CONTENT
 
   inject_into_file "spec/rails_helper.rb", extra_includes, :after => %r{RSpec.configure do \|config\|\n}
+
+  shoulda_matcher_includes = <<-CONTENT
+    Shoulda::Matchers.configure do |shoulda_config|
+      shoulda_config.integrate do |with|
+        with.test_framework :rspec
+        with.library :rails
+      end
+
+      #TODO Remove this once thoughtbot fixes shoulda
+      # see https://github.com/thoughtbot/shoulda-matchers/issues/1167
+      #
+      class ActiveModel::SecurePassword::InstanceMethodsOnActivation; end;
+    end
+
+  CONTENT
+
+  #TODO: check how is this generated
+  inject_into_file "spec/rails_helper.rb", extra_includes, :before => /^end/
 end
 
 def pimp_dot_rspec
