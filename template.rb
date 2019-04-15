@@ -31,11 +31,10 @@ def apply_template!
   rails_command "db:create"
   rails_command "db:migrate"
 
+  add_gitignore
   git :init
   git add: "."
   git commit: %Q{ -m "Initial commit" }
-
-  run_rspec
 end
 
 def assert_minimum_rails_version
@@ -169,6 +168,10 @@ def copy_templates
   directory "spec", force: true
 end
 
+def add_gitignore
+  copy_file ".gitignore", force: true
+end
+
 def add_tailwind
   run "yarn --ignore-engines add postcss-cssnext tailwindcss"
   run "mkdir app/javascript/stylesheets"
@@ -225,7 +228,7 @@ def pimp_rails_helper_rb
   CONTENT
 
   #TODO: check how is this generated
-  inject_into_file "spec/rails_helper.rb", extra_includes, :before => /^end/
+  inject_into_file "spec/rails_helper.rb", shoulda_matcher_includes, :before => /^end/
 end
 
 def pimp_dot_rspec
@@ -242,10 +245,6 @@ def setup_letter_opener_web
   inject_into_file "config/routes.rb", letter_opener_route, :after => /Rails.application.routes.draw do\n/
 
   environment "config.action_mailer.delivery_method = :letter_opener_web", env: 'development'
-end
-
-def run_rspec
-  run "rspec"
 end
 
 apply_template!

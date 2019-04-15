@@ -7,5 +7,5 @@ RSpec.describe User do
   #   it { is_expected.to validate_presence_of(:something) }
   # end
 
-  # it { should have_many(:stuff) }
+  # it { should have_many(:things) }
 end
