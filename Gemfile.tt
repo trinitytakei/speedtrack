@@ -12,7 +12,7 @@ gem 'jbuilder'<%= gemfile_requirement("jbuilder") %>
 gem 'bootsnap'<%= gemfile_requirement("bootsnap") %>, require: false
 gem 'devise', '>= 4.6.2'
 gem 'friendly_id', '~> 5.2', '>= 5.2.5'
-gem 'tailwindcss', '~> 0.2.0'
+gem 'tailwindcss', '~> 1.0.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
