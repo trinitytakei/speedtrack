@@ -146,7 +146,7 @@ def add_friendly_id
 
   inject_into_file(
     Dir["db/migrate/**/*friendly_id_slugs.rb"].first,
-    "[5.2]",
+    "[6.0]",
     after: "ActiveRecord::Migration"
   )
 end
