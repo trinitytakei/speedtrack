@@ -144,7 +144,7 @@ end
 def add_friendly_id
   generate "friendly_id"
 
-  insert_into_file(
+  inject_into_file(
     Dir["db/migrate/**/*friendly_id_slugs.rb"].first,
     "[5.2]",
     after: "ActiveRecord::Migration"
@@ -236,6 +236,14 @@ def pimp_dot_rspec
 end
 
 def pimp_spec_helper_rb
+  rcov_data = <<-RCOV
+  require 'simplecov'
+  SimpleCov.start
+
+  RCOV
+
+  inject_into_file "spec/spec_helper.rb", rcov_data, :before => /# This file was generated/
+  # uncomment nice defaults
   gsub_file "spec/spec_helper.rb", "=begin", ""
   gsub_file "spec/spec_helper.rb", "=end", ""
 end

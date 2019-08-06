@@ -32,6 +32,7 @@ group :development do
 end
 
 group :test do
+  gem 'simplecov', require: false
   gem "capybara"<%= gemfile_requirement("capybara") %>
   gem "selenium-webdriver"<%= gemfile_requirement("selenium-webdriver") %>
   gem 'webdrivers', '~> 3.0'
