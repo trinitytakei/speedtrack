@@ -14,27 +14,29 @@ def apply_template!
 
   generate_gemfile
 
-  stop_spring
-  add_users
-  add_friendly_id
-  remove_app_css
-  add_overmind
-  add_postcssrc
-  add_tailwind
-  setup_rspec
-  setup_letter_opener_web
+  after_bundle do
+    stop_spring
+    add_users
+    add_friendly_id
+    remove_app_css
+    add_overmind
+    add_postcssrc
+    add_tailwind
+    setup_rspec
+    setup_letter_opener_web
 
-  copy_templates
+    copy_templates
 
-  add_null_object_for_user
+    add_null_object_for_user
 
-  rails_command "db:create"
-  rails_command "db:migrate"
+    rails_command "db:create"
+    rails_command "db:migrate"
 
-  add_gitignore
-  git :init
-  git add: "."
-  git commit: %Q{ -m "Initial commit" }
+    add_gitignore
+    git :init
+    git add: "."
+    git commit: %Q{ -m "Initial commit" }
+  end
 end
 
 def assert_minimum_rails_version
@@ -42,8 +44,15 @@ def assert_minimum_rails_version
   rails_version = Gem::Version.new(Rails::VERSION::STRING)
   return if requirement.satisfied_by?(rails_version)
 
-  prompt = "This template requires Rails #{RAILS_REQUIREMENT}. "\
-           "You are using #{rails_version}. Please update rails!"
+  rails_gem_version = RAILS_REQUIREMENT.scan(/\d.+/).flatten[0]
+
+  prompt = <<-PROMPT
+  This template requires Rails #{RAILS_REQUIREMENT}.
+  You are using #{rails_version}. Please install the required rails version, by running the following command:
+
+  gem install rails -v #{rails_gem_version}
+
+  PROMPT
 end
 
 def assert_valid_options
@@ -66,7 +75,9 @@ def assert_postgresql
   return if IO.read("Gemfile") =~ /^\s*gem ['"]pg['"]/
   fail Rails::Generators::Error,
        "This template requires PostgreSQL, "\
-       "but the pg gem isn’t present in your Gemfile."
+       "but the pg gem isn’t present in your Gemfile."\
+       ""\
+       "Please generate your app with the --database=postgresql flag."
 end
 
 def replace_readme_rdoc_with_readme_md
