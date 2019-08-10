@@ -19,7 +19,7 @@
       <div class="flex">
         <%= f.label :password, class: "label" %>
         <% if @minimum_password_length %>
-        <span class="text-xs pl-1 text-grey-dark"><em>(<%= @minimum_password_length %> characters minimum)</em></span>
+        <span class="text-xs pl-1 text-gray-600"><em>(<%= @minimum_password_length %> characters minimum)</em></span>
         <% end %>
       </div>
       <%= f.password_field :password, autocomplete: "new-password", class: "input" %>
