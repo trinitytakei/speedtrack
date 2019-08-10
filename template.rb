@@ -29,6 +29,7 @@ def apply_template!
 
     add_null_object_for_user
 
+    rails_command "db:drop"
     rails_command "db:create"
     rails_command "db:migrate"
 
@@ -184,12 +185,18 @@ def add_gitignore
 end
 
 def add_tailwind
-  run "yarn --ignore-engines add postcss-cssnext tailwindcss"
+  run "yarn add postcss-cssnext tailwindcss"
   run "mkdir app/javascript/stylesheets"
-  run "./node_modules/.bin/tailwind init app/javascript/stylesheets/tailwind.js"
+  run "./node_modules/.bin/tailwind init app/javascript/stylesheets/tailwind_config.js"
   append_to_file "app/javascript/packs/application.js", 'import "stylesheets/application"'
   run "mkdir app/javascript/stylesheets/components"
   run "rm -r app/javascript/css"
+end
+
+def add_tailwind_defaults
+  # This might not be needed for future versions of tailwind
+  # Rignt now (version 1.1.1 it is needed, so copying it over from a canned version)
+  copy_file 'tailwind.config.js'
 end
 
 def remove_unneeded_javascript
